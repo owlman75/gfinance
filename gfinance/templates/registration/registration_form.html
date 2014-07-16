@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+                            <h1 align="center">Регистрация</h1>
+                            <table width="100%">
+                            <form method="post" action="">{% csrf_token %}
+                            {% for field in form %}
+                                <tr><td colspan="2">
+                                {% if field.help_text %}                                
+                                <div class="ui-widget" >
+                                <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+                                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                                <strong>Внимание ошибка!</strong><br />                             
+                                    <div class="myhelp_text">{{ field.help_text }}</div>
+                                </div>
+                                </div>
+                                {% endif %}
+                                {% if field.errors %}
+                                <div class="ui-widget" >
+                                <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+                                <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                                <strong>Внимание ошибка!</strong><br />                             
+                                    <div class="myerrorlist">{{ field.errors }}</div>
+                                </div>
+                                </div>
+                                {% endif %}
+                                </td></tr>                          
+                                <tr>
+                                <td align="right">
+                                {{ field.label_tag }}
+                                </td>
+                                <td align="left">
+                                {{ field }}
+                                </td></tr>
+                            {% endfor %}
+                            <tr><td colspan="2" align="center">
+                            <input type="submit" value="Зарегистрироваться" / class="clearfix">
+                            </td></tr>
+                            </form>
+                            </table>
+
+
+{% endblock %}

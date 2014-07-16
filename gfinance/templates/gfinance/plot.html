@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block script %}
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+<script>
+    $(function () {
+        $('#container').highcharts({
+            title: {
+                text: '{{ user.username }} portfolio by month',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Source: Yahoo finance API',
+                x: -20
+            },
+            xAxis: {
+                //{% regroup portfolio|dictsort:"dt" by dt as p_dt %}
+                
+                categories: [//{% for item_dt in p_dt %}
+                                '{{item_dt.grouper}}',
+                             //{% endfor %}
+                             ]
+            },
+            yAxis: {
+                title: {
+                    text: 'Close'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+
+            //{% regroup portfolio by symbol as p %}
+            series: [
+                    //{% for item_symbol in p %}
+                    {
+                    name: '{{item_symbol.grouper}}',
+                    data: [
+                           //{% for val in item_symbol.list|dictsort:"dt" %}
+                            {{val.Close}}, 
+                           //{% endfor %}
+                          ]
+                    }, 
+                    //{% endfor %}
+                    ]
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>Plot and table {{ user.username }} portfolio by month <small>({{dtstart}} - {{dtstop}})</small></h3>
+    <br /><br />
+    <div class="row">
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<br />
+        <div class="col-md-12" align="center">
+            <table class="table table-striped  table-bordered">
+                <thead align="center">
+                    <th>&nbsp;</th>
+                    {% regroup portfolio by symbol as p %}
+                    {% for item_symbol in p %}
+                    <th colspan="2">{{item_symbol.grouper}}</th>
+                    {% endfor %}
+                </thead>
+                <thead>
+                        <th><strong>date</strong></th>
+                        {% for item_symbol in p %}
+                            <th><strong>Volume</strong></th>
+                            <th><strong>Close</strong></th>
+                        {% endfor %}
+                </thead>
+                <tbody>
+                {% regroup portfolio|dictsort:"dt" by dt as p_dt %}
+                {% for item_dt in p_dt %}
+                    <tr>
+                        <td>{{item_dt.grouper}}</td>
+                        {% for val in item_dt.list %}
+                            <td>{{val.Volume}}</td>
+                            <td>{{val.Close}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

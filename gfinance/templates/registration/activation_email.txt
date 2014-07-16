@@ -1,0 +1,9 @@
+Вы успешно прошли процедуру регистрации на сайте http://{{ site }}
+Для активации вашего аккаунта необходимо перейти по ссылке:
+http://{{ site }}/accounts/activate/{{ activation_key }}/
+Спасибо!
+----------------------------------------------------------------------------------------
+You have successfully completed the registration procedure on the site http://{{ site }}
+To activate your account must click on the link:
+http://{{ site }}/accounts/activate/{{ activation_key }}/
+Thank you!

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h3>Здравствуйте<strong> {{ user.username }}!</strong></h3>
+    <div class="row">
+        <div class="col-md-2">
+            <table class="table table-striped">
+                <thead>
+                    <th>You stocks</th>
+                </thead>
+                <tbody>
+                {% for item in stocks %}
+                    <tr><td>{{item.stock}}</td></tr>
+                {% empty %}
+                    <tr><td>no stocks</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2" align="center">
+                <h4>Add stock</h4>
+                <form id="frmedit_{{item.id}}" action="{% url 'add_stock' %}" class="form-inline" method="POST" role="form">{% csrf_token %}
+
+                      <div class="input-update col-md-9">
+                          <select name="s" class="form-control">
+                              {% for t in types %}
+                                  <option value="{{t.id}}">{{t.symbol}}</option>
+                              {% endfor %}
+                          </select>
+                      </div>
+
+                      <div class="btn-update col-md-3">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-plus"></i></button>
+                      </div>
+                </form>
+        </div>
+        <div class="col-md-8" align="center">
+                <a href="{% url 'yhistory' %}" type="button" class="btn btn-default btn-lg">Download historic data from Yahoo</a>
+                <br /><br />
+                <a href="{% url 'plotmystocks' %}" type="button" class="btn btn-default btn-lg">My portfolio by month</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

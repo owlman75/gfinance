@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="col-md-12">
+                            <h1 align="center">Авторизация</h1>
+    </div>
+
+                            {% if user.is_authenticated %}
+                            {{ user.username }}, Вы же уже авторизорваны. 
+                            Впрочем, всегда можно <a href="{% url 'auth_logout' %}">выйти</a>.<br/><br/>
+                            {% else %}
+
+                            {% if form.non_field_errors %}
+                            {{ form.non_field_errors }}
+                            {% endif %}
+
+                            <form method="post" action=""> {% csrf_token %}
+                                {% if form.errors %}
+                                <div class="ui-widget" >
+                                        <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+                                            <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                                            <strong>Внимание!</strong><br />
+                                            Неправильный логин или пароль!
+                                        </div>
+                                </div>
+                                {% endif %}
+                            <table width="100%">
+                            <dl class="register">
+                            {% for field in form %}
+                                <tr><td align="right" valign="top">
+                                {{ field.label_tag }}
+                                </td><td align="left">
+                                {{ field }}
+                                </td>
+                                </tr>
+                            {% endfor %}
+                            </dl>
+                            <tr><td></td><td align="left">
+                            <input type="submit" value="Вход" class="btn btn-default">
+                            </td></tr>
+                            </form>
+                                
+                            <script type="text/javascript">
+                            document.getElementById('id_username').focus()
+                            </script>
+                            <tr><td></td><td>
+                            <!-- - <a href="{% url 'auth_password_reset' %}">Забыли пароль?</a><br/> -->
+                            - <a href="{% url 'registration_register' %}">Регистрация</a>
+                            </td></tr>
+                            </table>
+                            
+                            {% endif %}
+    
+</div>
+{% endblock %}
